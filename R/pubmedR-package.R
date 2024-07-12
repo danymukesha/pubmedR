@@ -7,7 +7,10 @@
 #' @importFrom xml2 read_xml
 #' @importFrom xml2 as_list
 #' @importFrom httr GET
+#' @importFrom httr content
 #' @importFrom lubridate month
 #' @importFrom sets set
+#' @importFrom httr2 request
+#' @importFrom httr2 req_perform
 #' 
 NULL

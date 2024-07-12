@@ -8,10 +8,11 @@
 #' @return A result from PubMed database.
 #' @export
 get_api_result <- function(search, start_record = 0) {
-  url <- get_search_url(search, start_record)
-  response <- httr::GET(url)
-  content <- content(response, as = "text")
-  result <- xml2::as_list(read_xml(content))
+  url <- get_search_url(search, start_record) |>
+    stringr::str_replace_all(" ", "+")
+  response <- httr2::request(url) |>
+    httr2::req_perform()
+  result <- httr2::resp_body_xml(response)
   
   return(result)
 }

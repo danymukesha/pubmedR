@@ -6,7 +6,7 @@
 \alias{pubmedR-package}
 \title{pubmedR: Fetching and Processing PubMed Data}
 \description{
-What the package does (one paragraph).
+Fetch and process data from the PubMed database. The package provides functions to build search URLs, retrieve search results, and process paper entries to extract relevant information.
 }
 \author{
 \strong{Maintainer}: Dany Mukesha \email{danymukesha@gmail.com} (\href{https://orcid.org/0009-0001-9514-751X}{ORCID})

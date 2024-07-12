@@ -11,27 +11,57 @@ run <- function(search) {
     return()
   }
   
+  start_record <- 0
   papers_count <- 0
-  result <- get_api_result(search)
+  retry_attempts <- 3  # the number of retry attempts
   
-  total_papers <- if (!is.null(result$eSearchResult$ErrorList)) {
-    0
-  } else {
-    as.numeric(result$eSearchResult$Count)
-  }
-  
-  message("PubMed: ", total_papers, " papers to fetch")
-  
-  while (papers_count < total_papers && !search$reached_its_limit(DATABASE_LABEL)) {
-    for (pubmed_id in result$eSearchResult$IdList$Id) {
-      if (papers_count >= total_papers || search$reached_its_limit(DATABASE_LABEL)) {
+  repeat {
+    result <- tryCatch({
+      get_api_result(search, start_record)
+    }, error = function(e) {
+      message("Error fetching results: ", e$message)
+      return(NULL)
+    })
+    ids <- xml2::xml_find_all(result, ".//Id") |>
+      xml2::xml_text()
+    
+    if (is.null(result)) {
+      break
+    }
+    
+    # this check for HTTP 429 for too many requests error
+    if (inherits(result, "try-error") && grepl("HTTP 429", result$message)) {
+      if (retry_attempts > 0) {
+        message("Too Many Requests (HTTP 429). Retrying after 5 seconds...")
+        Sys.sleep(5)  # Wait for 5 seconds before retrying
+        retry_attempts <- retry_attempts - 1
+        next
+      } else {
+        message("Too Many Requests (HTTP 429). Maximum retry attempts reached. Exiting.")
+        break
+      }
+    }
+    
+    total_papers <- length(ids) |>
+      as.numeric()
+    
+    message("PubMed: ", total_papers, " papers to fetch")
+    
+    
+    ids <- xml2::xml_find_all(result, ".//Id") |>
+      xml2::xml_text()
+    
+    if (length(ids) == 0) break
+    
+    for (id in ids) {
+      
+      if (papers_count >= total_papers || search$reached_its_limit(start_record)) {
         break
       }
       
       papers_count <- papers_count + 1
-      
       try({
-        paper_entry <- get_paper_entry(pubmed_id)
+        paper_entry <- get_paper_entry(id)
         
         if (!is.null(paper_entry)) {
           paper_title <- get_text_recursively(paper_entry$PubmedArticleSet$PubmedArticle$MedlineCitation$Article$ArticleTitle)
@@ -40,17 +70,16 @@ run <- function(search) {
           
           publication <- get_publication(paper_entry)
           paper <- get_paper(paper_entry, publication)
-          
           if (!is.null(paper)) {
-            paper$database <- DATABASE_LABEL
+            paper$database <- "PubMed"
             search$add_paper(paper)
           }
         }
       }, silent = TRUE)
     }
     
-    if (papers_count < total_papers && !search$reached_its_limit(DATABASE_LABEL)) {
-      result <- get_api_result(search, papers_count)
-    }
+    start_record <- start_record + MAX_ENTRIES_PER_PAGE
+    
+    if (papers_count >= total_papers ||search$reached_its_limit(start_record)) break
   }
 }
