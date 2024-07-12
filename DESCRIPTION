@@ -1,0 +1,20 @@
+Package: pubmedR
+Title: Fetching and Processing PubMed Data
+Version: 0.0.0.9000
+Authors@R: 
+    person("Dany", "Mukesha", , "danymukesha@gmail.com", 
+            role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0001-9514-751X"))
+Description: Fetch and process data from the PubMed database. The package 
+    provides functions to build search URLs, retrieve search results, 
+    and process paper entries to extract relevant information.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    httr,
+    lubridate,
+    sets,
+    stringr,
+    xml2
