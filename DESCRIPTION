@@ -1,4 +1,4 @@
-Package: pubmedR
+Package: pubmedr
 Title: Fetching and Processing PubMed Data
 Version: 0.0.0.9000
 Authors@R: 

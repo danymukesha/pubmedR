@@ -1,17 +1,16 @@
+---
+output: github_document
+---
 
 # pubmedr
 
-`pubmedr` is an R package designed to fetch and process data from the
-PubMed database. The package provides functions to build search URLs,
-retrieve search results, and process paper entries to extract relevant
-information.
+`pubmedr` is an R package designed to fetch and process data from the PubMed database. The package provides functions to build search URLs, retrieve search results, and process paper entries to extract relevant information.
 
 ## Installation
 
-To install the package, you can use the `devtools` package to install it
-from a local directory or GitHub repository.
+To install the package, you can use the `devtools` package to install it from a local directory or GitHub repository.
 
-``` r
+```{r installation, eval=FALSE}
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
@@ -29,16 +28,15 @@ Below are detailed steps on how to use the `pubmedr` package.
 
 ### Load the Package
 
-``` r
+```{r library, eval=FALSE}
 library(pubmedr)
 ```
 
 ### Define a Search Instance
 
-You need to define a search instance that contains the query parameters
-for fetching data from PubMed.
+You need to define a search instance that contains the query parameters for fetching data from PubMed.
 
-``` r
+```{r search,  eval=FALSE}
 search <- list(
   query = "(Alzheimer OR dementia OR cognitive impairment) AND (urine) AND (early detection OR disease monitoring OR diagnosis)",
   since = as.Date("2020-01-01"),
@@ -51,9 +49,9 @@ search <- list(
 
 ### Run the Search
 
-Use the `run` function to fetch papers from PubMed based on the defined
-search parameters.
+Use the `run` function to fetch papers from PubMed based on the defined search parameters.
 
-``` r
+```{r run_search, eval=FALSE}
 run(search)
 ```
+
