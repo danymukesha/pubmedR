@@ -40,11 +40,17 @@ get_paper <- function(paper_entry, publication) {
     paper_abstract <- get_text_recursively(paper_abstract_entry)
   }
   
-  paper_keywords <- tryCatch({
-    sets::set(sapply(article$MedlineCitation$KeywordList$Keyword, get_text_recursively))
-  }, error = function(e) {
-    sets::set()
-  })
+  # paper_keywords <- tryCatch({
+  #   sets::set(sapply(paper_entry$PubmedArticleSet$PubmedArticle$MedlineCitation$KeywordList$, get_text_recursively))
+  # }, error = function(e) {
+  #   sets::set()
+  # })
+  
+  paper_keywords <- character(length(paper_entry$PubmedArticleSet$PubmedArticle$MedlineCitation$KeywordList))
+  for (i in seq_along(paper_entry$PubmedArticleSet$PubmedArticle$MedlineCitation$KeywordList)) {
+    paper_keywords[i] <- paper_entry$PubmedArticleSet$PubmedArticle$MedlineCitation$KeywordList[[i]][[1]]
+  }
+  
   
   paper_publication_date <- tryCatch({
     as.Date(paste(paper_publication_date_year, paper_publication_date_month, paper_publication_date_day, sep = "-"))
