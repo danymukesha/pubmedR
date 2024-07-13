@@ -28,7 +28,7 @@ Below are detailed steps on how to use the `pubmedr` package.
 
 ### Load the Package
 
-```{r library, eval=FALSE}
+```{r library}
 library(pubmedr)
 ```
 
@@ -36,7 +36,7 @@ library(pubmedr)
 
 You need to define a search instance that contains the query parameters for fetching data from PubMed.
 
-```{r search,  eval=FALSE}
+```{r search}
 search <- list(
   query = "(Alzheimer OR dementia OR cognitive impairment) AND (urine) AND (early detection OR disease monitoring OR diagnosis)",
   since = as.Date("2020-01-01"),
@@ -51,7 +51,7 @@ search <- list(
 
 Use the `run` function to fetch papers from PubMed based on the defined search parameters.
 
-```{r run_search, eval=FALSE}
+```{r run_search, message=FALSE, warning=FALSE}
 run(search)
 ```
 

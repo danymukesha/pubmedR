@@ -8,13 +8,13 @@
 #' @export
 get_publication <- function(paper_entry) {
   article <- paper_entry$PubmedArticleSet$PubmedArticle$MedlineCitation$Article
-  publication_title <- article$Journal$Title
+  publication_title <- article$Journal$Title[[1]]
   
   if (is.null(publication_title) || length(publication_title) == 0) {
     return(NULL)
   }
   
-  publication_issn <- article$Journal$ISSN$`#text`
+  publication_issn <- article$Journal$ISSN[[1]]
   
   publication <- list(
     title = publication_title,

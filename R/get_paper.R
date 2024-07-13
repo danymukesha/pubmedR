@@ -26,14 +26,7 @@ get_paper <- function(paper_entry, publication) {
     paper_publication_date_year <- article$Journal$JournalIssue$PubDate$Year
   }
   
-  paper_doi <- NULL
-  paper_ids <- article$PubmedData$ArticleIdList$ArticleId
-  for (paper_id in paper_ids) {
-    if (is.list(paper_id) && paper_id$`@IdType` == "doi") {
-      paper_doi <- paper_id$`#text`
-      break
-    }
-  }
+  paper_doi <- article$ELocationID[[1]]
   
   paper_abstract <- NULL
   paper_abstract_entry <- article$Abstract$AbstractText
@@ -70,18 +63,23 @@ get_paper <- function(paper_entry, publication) {
   paper_authors <- c()
   retrieved_authors <- if (is.list(article$AuthorList$Author)) article$AuthorList$Author else list(article$AuthorList$Author)
   
-  for (author in retrieved_authors) {
-    if (is.character(author)) {
-      paper_authors <- c(paper_authors, author)
-    } else if (is.list(author)) {
-      paper_authors <- c(paper_authors, stringr::str_c(author$ForeName, author$LastName, sep = " "))
-    }
+  if (is.character(retrieved_authors)) {
+    paper_authors <- c(paper_authors, retrieved_authors)
+  } else if (is.list(retrieved_authors)) {
+    paper_authors <- c(
+      paper_authors,
+      stringr::str_c(
+        retrieved_authors$ForeName[[1]],
+        retrieved_authors$LastName[[1]],
+        sep = " "
+      )
+    )
   }
   
   paper_pages <- NULL
   paper_number_of_pages <- NULL
   try({
-    paper_pages <- article$Pagination$MedlinePgn
+    paper_pages <- article$Pagination$MedlinePgn[[1]]
     if (!is.numeric(paper_pages)) {
       pages_split <- stringr::str_split(paper_pages, "-")
       paper_number_of_pages <- abs(as.numeric(pages_split[[1]][1]) - as.numeric(pages_split[[1]][2])) + 1
@@ -98,7 +96,7 @@ get_paper <- function(paper_entry, publication) {
     keywords = paper_keywords,
     number_of_pages = paper_number_of_pages,
     pages = paper_pages
-  )
+  ) 
   
   return(paper)
 }

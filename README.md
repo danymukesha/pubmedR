@@ -57,3 +57,20 @@ search parameters.
 ``` r
 run(search)
 ```
+
+    ## # A tibble: 49 × 11
+    ##    title    abstract authors publication_title publication_issn publication_type
+    ##    <chr>    <chr>    <chr>   <chr>             <chr>            <chr>           
+    ##  1 Alterat… "An eas… Yumi W… Frontiers in neu… 1664-2295        Journal         
+    ##  2 Relatio… "This s… Yong-P… BioMed research … 2314-6141        Journal         
+    ##  3 Case Re… "Backgr… Abdulr… F1000Research     2046-1402        Journal         
+    ##  4 Non-inv… "This r… Andrea… Clinical chemist… 1437-4331        Journal         
+    ##  5 Cytomeg… "Cytome… Osric … European journal… 1872-7654        Journal         
+    ##  6 Polyvas… "Cardio… Yueson… Stroke and vascu… 2059-8696        Journal         
+    ##  7 Impairm… "Cognit… Yongju… Stroke and vascu… 2059-8696        Journal         
+    ##  8 Inverse… "A non-… Natali… Advanced healthc… 2192-2659        Journal         
+    ##  9 Urinary… "To exa… Jia-He… Neurological sci… 1590-3478        Journal         
+    ## 10 Spot ur… "Iodine… Tillma… European journal… 1436-6215        Journal         
+    ## # ℹ 39 more rows
+    ## # ℹ 5 more variables: publication_date <dbl>, doi <chr>,
+    ## #   number_of_pages <list>, pages <list>, database <chr>

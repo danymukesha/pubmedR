@@ -12,5 +12,7 @@
 #' @importFrom sets set
 #' @importFrom httr2 request
 #' @importFrom httr2 req_perform
+#' @importFrom purrr pluck
+#' @importFrom tibble tibble
 #' 
 NULL
